@@ -1,5 +1,7 @@
 package org.taktik.couchdb.entity
 
-import java.io.Serializable
+import kotlinx.serialization.Serializable
+import java.io.Serializable as JSerializable
 
-data class IdAndRev(val id: String, val rev: String?) : Serializable
+@Serializable
+data class IdAndRev(val id: String, val rev: String?) : JSerializable

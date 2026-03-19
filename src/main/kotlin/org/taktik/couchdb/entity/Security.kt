@@ -19,13 +19,16 @@ package org.taktik.couchdb.entity
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonInclude
-import java.io.Serializable
+import kotlinx.serialization.Serializable
+import java.io.Serializable as JSerializable
 
+@Serializable
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class Security(
         val admins: Right = Right(),
         val members: Right = Right(),
-) : Serializable {
+) : JSerializable {
+        @Serializable
         data class Right(val names: Set<String> = setOf(), val roles: Set<String> = setOf())
 }

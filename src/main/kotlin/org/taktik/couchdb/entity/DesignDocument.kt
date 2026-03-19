@@ -20,14 +20,17 @@ package org.taktik.couchdb.entity
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonProperty
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 import org.taktik.couchdb.CouchDbDocument
 
+@Serializable
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class DesignDocument(
-        @JsonProperty("_id") override var id: String,
-        @JsonProperty("_rev") override var rev: String? = null,
-        @JsonProperty("rev_history") override val revHistory: Map<String, String> = mapOf(),
+        @SerialName("_id") @JsonProperty("_id") override var id: String,
+        @SerialName("_rev") @JsonProperty("_rev") override var rev: String? = null,
+        @SerialName("rev_history") @JsonProperty("rev_history") override val revHistory: Map<String, String> = mapOf(),
         val language: String? = null,
         val views: Map<String, View> = mapOf(),
         val lists: Map<String, String> = mapOf(),
@@ -73,6 +76,7 @@ data class DesignDocument(
             }
 }
 
+@Serializable
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class View(val map: String, val reduce: String? = null) {

@@ -25,6 +25,7 @@ val mavenReleasesRepository: String by project
 
 val kotlinVersion = "2.2.21"
 val kotlinCoroutinesVersion = "1.8.1"
+val kotlinxSerializationVersion = "1.10.0"
 val asyncHttpVersion = "0.2.23-g050f3d219b"
 val jacksonVersion = "2.19.1"
 val nettyVersion = "4.1.122.Final"
@@ -37,6 +38,7 @@ val logbackVersion = "1.5.18"
 
 plugins {
     kotlin("jvm") version "2.2.21"
+    kotlin("plugin.serialization") version "2.2.21"
     `maven-publish`
     id("com.taktik.gradle.maven-repository") version "1.0.7"
     id("com.taktik.gradle.git-version") version "2.0.8-gb47b2d0e35"
@@ -78,6 +80,8 @@ dependencies {
 
     implementation(group = "com.fasterxml.jackson.core", name = "jackson-databind", version = jacksonVersion)
     implementation(group = "com.fasterxml.jackson.module", name = "jackson-module-kotlin", version = jacksonVersion)
+
+    implementation(group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version = kotlinxSerializationVersion)
 
     implementation(group = "org.jetbrains.kotlin", name = "kotlin-stdlib", version = kotlinVersion)
     implementation(group = "org.jetbrains.kotlin", name = "kotlin-reflect", version = kotlinVersion)

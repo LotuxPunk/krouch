@@ -4,6 +4,9 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
+import kotlinx.serialization.Contextual
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 import org.taktik.couchdb.handlers.ReplicationStateDeserializer
 import org.taktik.couchdb.handlers.ZonedDateTimeDeserializer
 import java.time.ZonedDateTime
@@ -13,48 +16,53 @@ interface Scheduler {
         val totalRows: Int
         val offset: Int
     }
+    @Serializable
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @JsonIgnoreProperties(ignoreUnknown = true)
         data class Docs(
-            @JsonProperty("total_rows") override val totalRows: Int,
+            @SerialName("total_rows") @JsonProperty("total_rows") override val totalRows: Int,
             override val offset: Int,
             val docs: List<Doc>
     ) : ListResult {
+        @Serializable
         @JsonInclude(JsonInclude.Include.NON_NULL)
         @JsonIgnoreProperties(ignoreUnknown = true)
                 data class Doc (
                 val database : String? = null,
-                @JsonProperty("doc_id") val docId : String? = null,
+                @SerialName("doc_id") @JsonProperty("doc_id") val docId : String? = null,
                 val id : String? = null,
                 val node : String? = null,
                 val source : String? = null,
                 val target : String? = null,
                 @JsonDeserialize(using = ReplicationStateDeserializer::class) val state : ReplicationState? = null,
                 val info : Info? = null,
-                @JsonProperty("error_count") val errorCount : Int? = null,
-                @JsonProperty("last_updated")
+                @SerialName("error_count") @JsonProperty("error_count") val errorCount : Int? = null,
+                @SerialName("last_updated") @JsonProperty("last_updated")
                 @JsonDeserialize(using = ZonedDateTimeDeserializer::class)
+                @Contextual
                 val lastUpdated : ZonedDateTime? = null,
-                @JsonProperty("start_time")
+                @SerialName("start_time") @JsonProperty("start_time")
                 @JsonDeserialize(using = ZonedDateTimeDeserializer::class)
+                @Contextual
                 val startTime : ZonedDateTime? = null,
-                @JsonProperty("source_proxy") val sourceProxy : String? = null,
-                @JsonProperty("target_proxy") val targetProxy : String? = null
+                @SerialName("source_proxy") @JsonProperty("source_proxy") val sourceProxy : String? = null,
+                @SerialName("target_proxy") @JsonProperty("target_proxy") val targetProxy : String? = null
         )
     }
 
+    @Serializable
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @JsonIgnoreProperties(ignoreUnknown = true)
         data class Info (
-            @JsonProperty("revisions_checked") val revisionsChecked : Int? = null,
-            @JsonProperty("missing_revisions_found") val missingRevisionsFound : Int? = null,
-            @JsonProperty("docs_read") val docsRead : Int? = null,
-            @JsonProperty("docs_written") val docsWritten : Int? = null,
-            @JsonProperty("changes_pending") val changesPending : Int? = null,
-            @JsonProperty("doc_write_failures") val docWriteFailures : Int? = null,
-            @JsonProperty("checkpointed_source_seq") val checkpointedSourceSeq : String? = null,
-            @JsonProperty("source_seq") val sourceSeq : String? = null,
-            @JsonProperty("through_seq") val throughSeq : String? = null,
+            @SerialName("revisions_checked") @JsonProperty("revisions_checked") val revisionsChecked : Int? = null,
+            @SerialName("missing_revisions_found") @JsonProperty("missing_revisions_found") val missingRevisionsFound : Int? = null,
+            @SerialName("docs_read") @JsonProperty("docs_read") val docsRead : Int? = null,
+            @SerialName("docs_written") @JsonProperty("docs_written") val docsWritten : Int? = null,
+            @SerialName("changes_pending") @JsonProperty("changes_pending") val changesPending : Int? = null,
+            @SerialName("doc_write_failures") @JsonProperty("doc_write_failures") val docWriteFailures : Int? = null,
+            @SerialName("checkpointed_source_seq") @JsonProperty("checkpointed_source_seq") val checkpointedSourceSeq : String? = null,
+            @SerialName("source_seq") @JsonProperty("source_seq") val sourceSeq : String? = null,
+            @SerialName("through_seq") @JsonProperty("through_seq") val throughSeq : String? = null,
             val error : String? = null
     )
 
@@ -63,6 +71,7 @@ interface Scheduler {
         val terminal: Boolean
     }
 
+    @Serializable(with = org.taktik.couchdb.serialization.ReplicationStateSerializer::class)
     enum class ReplicationState() : State {
         INITIALIZING {
             override val healthy = true
@@ -107,18 +116,20 @@ interface Scheduler {
 
     }
 
+    @Serializable
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @JsonIgnoreProperties(ignoreUnknown = true)
         data class Jobs(
-            @JsonProperty("total_rows") override val totalRows: Int,
+            @SerialName("total_rows") @JsonProperty("total_rows") override val totalRows: Int,
             override val offset: Int,
             val jobs: List<Job>
     ) : ListResult {
+        @Serializable
         @JsonInclude(JsonInclude.Include.NON_NULL)
         @JsonIgnoreProperties(ignoreUnknown = true)
                 data class Job(
                 val database: String? = null,
-                @JsonProperty("doc_id") val docId: String? = null,
+                @SerialName("doc_id") @JsonProperty("doc_id") val docId: String? = null,
                 val id: String? = null,
                 val node: String? = null,
                 val source: String? = null,
@@ -127,14 +138,16 @@ interface Scheduler {
                 val user: String? = null,
                 val info: Info? = null,
                 val history: List<History>? = null,
-                @JsonProperty("start_time")
+                @SerialName("start_time") @JsonProperty("start_time")
                 @JsonDeserialize(using = ZonedDateTimeDeserializer::class)
+                @Contextual
                 val startTime: ZonedDateTime? = null
         ) {
+            @Serializable
             @JsonInclude(JsonInclude.Include.NON_NULL)
             @JsonIgnoreProperties(ignoreUnknown = true)
                         data class History(
-                    @JsonDeserialize(using = ZonedDateTimeDeserializer::class) val timestamp: ZonedDateTime? = null,
+                    @JsonDeserialize(using = ZonedDateTimeDeserializer::class) @Contextual val timestamp: ZonedDateTime? = null,
                     val type: String? = null,
                     val reason: String? = null
             )

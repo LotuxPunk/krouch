@@ -116,6 +116,8 @@ import java.time.Instant
 import java.util.concurrent.atomic.AtomicReference
 import kotlin.math.max
 import kotlin.math.min
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
 class NoHeartbeatException(msg: String) : CancellationException(msg)
 
@@ -179,27 +181,33 @@ data class ViewRowWithMissingDoc<K, V>(override val id: String, override val key
         get() = error("Doc is missing for this row")
 }
 
+@Serializable
 private data class BulkUpdateRequest<T : CouchDbDocument>(
     val docs: Collection<T>,
-    @JsonProperty("all_or_nothing") val allOrNothing: Boolean = false
+    @SerialName("all_or_nothing") @JsonProperty("all_or_nothing") val allOrNothing: Boolean = false
 )
 
+@Serializable
 private data class BulkDeleteRequest(
     val docs: Collection<DeleteRequest>,
-    @JsonProperty("all_or_nothing") val allOrNothing: Boolean = false
+    @SerialName("all_or_nothing") @JsonProperty("all_or_nothing") val allOrNothing: Boolean = false
 )
 
+@Serializable
 private data class DeleteRequest(
-    @JsonProperty("_id") val id: String,
-    @JsonProperty("_rev") val rev: String?,
-    @JsonProperty("_deleted") val deleted: Boolean = true
+    @SerialName("_id") @JsonProperty("_id") val id: String,
+    @SerialName("_rev") @JsonProperty("_rev") val rev: String?,
+    @SerialName("_deleted") @JsonProperty("_deleted") val deleted: Boolean = true
 )
 
+@Serializable
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class BulkUpdateResult(val id: String, val rev: String?, val ok: Boolean?, val error: String?, val reason: String?)
+@Serializable
 data class DocIdentifier(val id: String?, val rev: String?)
 
+@Serializable
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class ReplicatorResponse(

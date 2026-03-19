@@ -20,14 +20,17 @@ package org.taktik.couchdb.entity
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonProperty
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 import org.taktik.couchdb.CouchDbDocument
 
+@Serializable
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class User(
-        @JsonProperty("_id") override val id: String,
-        @JsonProperty("_rev") override val rev: String? = null,
-        @JsonProperty("rev_history") override val revHistory: Map<String, String> = mapOf(),
+        @SerialName("_id") @JsonProperty("_id") override val id: String,
+        @SerialName("_rev") @JsonProperty("_rev") override val rev: String? = null,
+        @SerialName("rev_history") @JsonProperty("rev_history") override val revHistory: Map<String, String> = mapOf(),
         val name: String? = null,
         val password: String? = null,
         val roles: List<String> = listOf()

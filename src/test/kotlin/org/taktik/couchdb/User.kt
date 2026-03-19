@@ -6,10 +6,13 @@ package org.taktik.couchdb
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonProperty
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 import org.taktik.couchdb.entity.Attachment
 import org.taktik.couchdb.entity.Versionable
-import java.io.Serializable
+import java.io.Serializable as JSerializable
 
+@Serializable
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 
@@ -47,9 +50,9 @@ import java.io.Serializable
  */
 
 data class User(
-	@JsonProperty("_id") override val id: String,
-	@JsonProperty("_rev") override val rev: String? = null,
-	@JsonProperty("deleted") val deletionDate: Long? = null,
+	@SerialName("_id") @JsonProperty("_id") override val id: String,
+	@SerialName("_rev") @JsonProperty("_rev") override val rev: String? = null,
+	@SerialName("deleted") @JsonProperty("deleted") val deletionDate: Long? = null,
 	val created: Long? = null,
 
 	val name: String? = null,
@@ -57,7 +60,7 @@ data class User(
 	val login: String? = null,
 	val passwordHash: String? = null,
 	val secret: String? = null,
-	@JsonProperty("isUse2fa") val use2fa: Boolean? = null,
+	@SerialName("isUse2fa") @JsonProperty("isUse2fa") val use2fa: Boolean? = null,
 	val groupId: String? = null,
 	val healthcarePartyId: String? = null,
 	val patientId: String? = null,
@@ -73,10 +76,10 @@ data class User(
 	@Deprecated("Application tokens stocked in clear and eternal. Replaced by authenticationTokens")
 	val applicationTokens: Map<String, String>? = null,
 
-	@JsonProperty("_attachments") val attachments: Map<String, Attachment>? = emptyMap(),
-	@JsonProperty("_conflicts") val conflicts: List<String>? = emptyList(),
-	@JsonProperty("rev_history") override val revHistory : Map<String, String>? = emptyMap(),
-) : CouchDbDocument, Cloneable, Serializable {
+	@SerialName("_attachments") @JsonProperty("_attachments") val attachments: Map<String, Attachment>? = emptyMap(),
+	@SerialName("_conflicts") @JsonProperty("_conflicts") val conflicts: List<String>? = emptyList(),
+	@SerialName("rev_history") @JsonProperty("rev_history") override val revHistory : Map<String, String>? = emptyMap(),
+) : CouchDbDocument, Cloneable, JSerializable {
 	override fun withIdRev(id: String?, rev: String) = if (id != null) this.copy(id = id, rev = rev) else this.copy(rev = rev)
 
 	@JsonProperty("java_type")

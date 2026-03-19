@@ -3,32 +3,38 @@ package org.taktik.couchdb.entity
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonProperty
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 import java.net.URI
 
+@Serializable
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class ReplicateCommand(
-        @JsonProperty("_id") val id: String? = null,
+        @SerialName("_id") @JsonProperty("_id") val id: String? = null,
         val continuous: Boolean = false,
-        @JsonProperty("create_target") val createTarget: Boolean = false,
-        @JsonProperty("doc_ids") val docIds: List<String>? = null,
+        @SerialName("create_target") @JsonProperty("create_target") val createTarget: Boolean = false,
+        @SerialName("doc_ids") @JsonProperty("doc_ids") val docIds: List<String>? = null,
         val cancel: Boolean? = null,
         val filter: String? = null,
         val selector: String? = null,
         val source: Remote,
         val target: Remote
 ) {
+    @Serializable
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @JsonIgnoreProperties(ignoreUnknown = true)
         data class Remote(
             val url: String,
             val auth: Authentication? = null
     ) {
+        @Serializable
         @JsonInclude(JsonInclude.Include.NON_NULL)
         @JsonIgnoreProperties(ignoreUnknown = true)
                 data class Authentication(
                 val basic: Basic? = null
         ) {
+            @Serializable
             @JsonInclude(JsonInclude.Include.NON_NULL)
             @JsonIgnoreProperties(ignoreUnknown = true)
                         data class Basic (
