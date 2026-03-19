@@ -2,6 +2,7 @@ package org.taktik.couchdb.serialization
 
 import kotlinx.serialization.encodeToString
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
@@ -83,7 +84,7 @@ class KotlinxSerializationTest {
     fun `Attachment Transient fields are excluded`() {
         val original = Attachment(id = "att-1", contentLength = 100L, isStub = true)
         val json = CouchDbJson.encodeToString(original)
-        assertTrue(!json.contains("\"contentLength\""))
+        assertFalse(json.contains("\"contentLength\""))
     }
 
     @Test
@@ -466,8 +467,8 @@ class KotlinxSerializationTest {
         // Verify null fields are not encoded (matching @JsonInclude NON_NULL)
         val result = BulkUpdateResult("id-1", null, true, null, null)
         val json = CouchDbJson.encodeToString(result)
-        assertTrue(!json.contains("\"rev\""))
-        assertTrue(!json.contains("\"error\""))
-        assertTrue(!json.contains("\"reason\""))
+        assertFalse(json.contains("\"rev\""))
+        assertFalse(json.contains("\"error\""))
+        assertFalse(json.contains("\"reason\""))
     }
 }
