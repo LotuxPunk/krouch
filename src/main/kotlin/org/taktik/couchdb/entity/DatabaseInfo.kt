@@ -20,35 +20,41 @@ package org.taktik.couchdb.entity
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonProperty
-import java.io.Serializable
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+import java.io.Serializable as JSerializable
 
+@Serializable
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class DatabaseInfoWrapper(val info: DatabaseInfo?, val error: String?)
 
+@Serializable
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class DatabaseInfo(
-        @JsonProperty("db_name") val dbName: String,
-        @JsonProperty("purge_seq") val purgeSeq: String?,
-        @JsonProperty("update_seq") val updateSeq: String?,
+        @SerialName("db_name") @JsonProperty("db_name") val dbName: String,
+        @SerialName("purge_seq") @JsonProperty("purge_seq") val purgeSeq: String?,
+        @SerialName("update_seq") @JsonProperty("update_seq") val updateSeq: String?,
         val sizes: Sizes,
-        @JsonProperty("doc_del_count") val docDelCount: Long?,
-        @JsonProperty("doc_count") val docCount: Long?,
-        @JsonProperty("disk_format_version") val diskFormatVersion: Long?,
-        @JsonProperty("compact_running") val compactRunning: Boolean?,
+        @SerialName("doc_del_count") @JsonProperty("doc_del_count") val docDelCount: Long?,
+        @SerialName("doc_count") @JsonProperty("doc_count") val docCount: Long?,
+        @SerialName("disk_format_version") @JsonProperty("disk_format_version") val diskFormatVersion: Long?,
+        @SerialName("compact_running") @JsonProperty("compact_running") val compactRunning: Boolean?,
         val cluster: Qnwr,
-        @JsonProperty("instance_start_time") val instanceStartTime: Long?,
-) : Serializable
+        @SerialName("instance_start_time") @JsonProperty("instance_start_time") val instanceStartTime: Long?,
+) : JSerializable
 
+@Serializable
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class Sizes(
         val file: Long,
         val external: Long,
         val active: Long,
-) : Serializable
+) : JSerializable
 
+@Serializable
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class Qnwr(
@@ -56,4 +62,4 @@ data class Qnwr(
         val n: Int?,
         val w: Int?,
         val r: Int?,
-) : Serializable
+) : JSerializable

@@ -22,11 +22,15 @@ import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.databind.JsonDeserializer
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import com.fasterxml.jackson.databind.annotation.JsonSerialize
+import kotlinx.serialization.Contextual
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 import org.taktik.couchdb.handlers.InstantDeserializer
 import org.taktik.couchdb.handlers.InstantSerializer
 import org.taktik.couchdb.handlers.JacksonActiveTaskDeserializer
 import java.time.Instant
 
+@Serializable
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonDeserialize(using = JacksonActiveTaskDeserializer::class)
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -35,14 +39,18 @@ sealed class ActiveTask(
         @JsonSerialize(using = InstantSerializer::class)
         @JsonInclude(JsonInclude.Include.NON_NULL)
         @JsonDeserialize(using = InstantDeserializer::class)
+        @Contextual
         val started_on: Instant? = null,
         @JsonSerialize(using = InstantSerializer::class)
         @JsonInclude(JsonInclude.Include.NON_NULL)
         @JsonDeserialize(using = InstantDeserializer::class)
+        @Contextual
         val updated_on: Instant? = null
 )
 
 @Suppress("unused")
+@Serializable
+@SerialName("unsupported")
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonDeserialize(using = JsonDeserializer.None::class)
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -52,14 +60,18 @@ class UnsupportedTask(
         @JsonSerialize(using = InstantSerializer::class)
         @JsonInclude(JsonInclude.Include.NON_NULL)
         @JsonDeserialize(using = InstantDeserializer::class)
+        @Contextual
         started_on: Instant? = null,
         @JsonSerialize(using = InstantSerializer::class)
         @JsonInclude(JsonInclude.Include.NON_NULL)
         @JsonDeserialize(using = InstantDeserializer::class)
+        @Contextual
         updated_on: Instant? = null
 ) : ActiveTask(pid, started_on, updated_on)
 
 @Suppress("unused")
+@Serializable
+@SerialName("database_compaction")
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonDeserialize(using = JsonDeserializer.None::class)
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -69,10 +81,12 @@ class DatabaseCompactionTask(
         @JsonSerialize(using = InstantSerializer::class)
         @JsonInclude(JsonInclude.Include.NON_NULL)
         @JsonDeserialize(using = InstantDeserializer::class)
+        @Contextual
         started_on: Instant? = null,
         @JsonSerialize(using = InstantSerializer::class)
         @JsonInclude(JsonInclude.Include.NON_NULL)
         @JsonDeserialize(using = InstantDeserializer::class)
+        @Contextual
         updated_on: Instant? = null,
         val database: String?,
         val total_changes: Double?,
@@ -80,6 +94,8 @@ class DatabaseCompactionTask(
 ) : ActiveTask(pid, started_on, updated_on)
 
 @Suppress("unused")
+@Serializable
+@SerialName("view_compaction")
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonDeserialize(using = JsonDeserializer.None::class)
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -89,10 +105,12 @@ class ViewCompactionTask(
         @JsonSerialize(using = InstantSerializer::class)
         @JsonInclude(JsonInclude.Include.NON_NULL)
         @JsonDeserialize(using = InstantDeserializer::class)
+        @Contextual
         started_on: Instant? = null,
         @JsonSerialize(using = InstantSerializer::class)
         @JsonInclude(JsonInclude.Include.NON_NULL)
         @JsonDeserialize(using = InstantDeserializer::class)
+        @Contextual
         updated_on: Instant? = null,
         val database: String?,
         val design_document: String?,
@@ -103,6 +121,8 @@ class ViewCompactionTask(
 ) : ActiveTask(pid, started_on, updated_on)
 
 @Suppress("unused")
+@Serializable
+@SerialName("indexer")
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonDeserialize(using = JsonDeserializer.None::class)
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -112,10 +132,12 @@ class Indexer(
         @JsonSerialize(using = InstantSerializer::class)
         @JsonInclude(JsonInclude.Include.NON_NULL)
         @JsonDeserialize(using = InstantDeserializer::class)
+        @Contextual
         started_on: Instant? = null,
         @JsonSerialize(using = InstantSerializer::class)
         @JsonInclude(JsonInclude.Include.NON_NULL)
         @JsonDeserialize(using = InstantDeserializer::class)
+        @Contextual
         updated_on: Instant? = null,
         val database: String?,
         val node: String?,
@@ -125,6 +147,8 @@ class Indexer(
 ) : ActiveTask(pid, started_on, updated_on)
 
 @Suppress("unused")
+@Serializable
+@SerialName("replication")
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonDeserialize(using = JsonDeserializer.None::class)
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -133,10 +157,12 @@ class ReplicationTask(
         @JsonSerialize(using = InstantSerializer::class)
         @JsonInclude(JsonInclude.Include.NON_NULL)
         @JsonDeserialize(using = InstantDeserializer::class)
+        @Contextual
         started_on: Instant? = null,
         @JsonSerialize(using = InstantSerializer::class)
         @JsonInclude(JsonInclude.Include.NON_NULL)
         @JsonDeserialize(using = InstantDeserializer::class)
+        @Contextual
         updated_on: Instant? = null,
         val replication_id: String?,
         val doc_id: String?,

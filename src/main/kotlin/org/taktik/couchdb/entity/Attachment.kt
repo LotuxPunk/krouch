@@ -21,19 +21,22 @@ import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonProperty
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
 /**
  *
  * @author henrik lundgren
  */
+@Serializable
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class Attachment(
-        @JsonIgnore val id: String? = null,
-        @field:JsonProperty("content_type") val contentType: String? = null,
-        @JsonIgnore val contentLength: Long? = null,
-        @field:JsonProperty("data") val dataBase64: String? = null,
-        @field:JsonProperty("stub")
+        @kotlinx.serialization.Transient @JsonIgnore val id: String? = null,
+        @SerialName("content_type") @field:JsonProperty("content_type") val contentType: String? = null,
+        @kotlinx.serialization.Transient @JsonIgnore val contentLength: Long? = null,
+        @SerialName("data") @field:JsonProperty("data") val dataBase64: String? = null,
+        @SerialName("stub") @field:JsonProperty("stub")
         val isStub: Boolean = false,
         val revpos: Int? = null,
         val digest: String? = null,

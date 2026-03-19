@@ -19,6 +19,7 @@ package org.taktik.couchdb.entity
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import com.fasterxml.jackson.databind.annotation.JsonSerialize
+import kotlinx.serialization.Serializable
 import org.taktik.couchdb.handlers.JacksonComplexKeyDeserializer
 import org.taktik.couchdb.handlers.JacksonComplexKeySerializer
 import java.util.Objects
@@ -28,6 +29,7 @@ import java.util.Objects
  * The keys's components can consists of any JSON-encodable objects, but are most likely to be Strings and Integers.
  * @author henrik lundgren
  */
+@Serializable(with = org.taktik.couchdb.serialization.ComplexKeySerializer::class)
 @JsonDeserialize(using = JacksonComplexKeyDeserializer::class)
 @JsonSerialize(using = JacksonComplexKeySerializer::class)
 class ComplexKey(components: Array<Any?> = arrayOf()) {

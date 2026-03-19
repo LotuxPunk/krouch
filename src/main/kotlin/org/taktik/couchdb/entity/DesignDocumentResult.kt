@@ -18,9 +18,12 @@
 package org.taktik.couchdb.entity
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
+import kotlinx.serialization.Serializable
 import org.taktik.couchdb.ViewRowNoDoc
 
+@Serializable
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class DesignDocumentResult(val rows: List<ViewRowNoDoc<String, RevOnly>>)
 
+@Serializable
 data class RevOnly(val rev: String)
